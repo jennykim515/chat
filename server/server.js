@@ -15,6 +15,21 @@ const io = require('socket.io')(3000, {
  */
 let users = {}
 
+/**
+ * key: user
+ * value: list of rooms
+ */
+let rooms = {}
+
+function addToRoom(user, room) {
+    if (user in rooms) {
+        rooms[user].push(room)
+    }
+    else {
+        rooms[user] = [room]
+    }
+}
+
 io.on('connection', socket => {
     socket.on('register-user', (new_user, status) => {
         if (new_user.username in users) {
@@ -31,6 +46,7 @@ io.on('connection', socket => {
                 socketId: socket.id
             }
 
+            console.log("new user update", new_user)
             socket.broadcast.emit('new-user-update', new_user)
             status(true)
         };
@@ -38,7 +54,7 @@ io.on('connection', socket => {
 
     socket.on('ping', (user) => {
         if (user in users) {
-            console.log(user, 'is online')
+            console.log('friend', user, 'is online')
             socket.emit('friend-info', users[user])
         }
         else {
@@ -47,22 +63,34 @@ io.on('connection', socket => {
     })
 
     socket.on('send-message', (message, room) => {
-        console.log("received mssage, sending it back", message)
         socket.to(room).emit('receive-message', message)
     })
 
     socket.on('join-room', (room, cb) => {
-        console.log("Creating", room, "on server side")
+        // creating room
         socket.join(room)
+
+        const userList = room.split('-')
+        const user1 = userList[0]
+        const user2 = userList[1]
+
+        addToRoom(user1, room)
+        addToRoom(user2, room)
+
         cb(`joined ${room}`)
     })
 
+    socket.on('get-rooms', (username, cb) => {
+        // cb(JSON.stringify(rooms[username]))
+        cb(JSON.stringify(rooms[username]))
+    })
 
     socket.on('disconnect', function () {
         for (let username in users) {
             if (users[username].socketId === socket.id) {
                 socket.broadcast.emit('someone-disconnected', username)
                 delete users[username];
+                delete rooms[username]
                 return;
             }
         }

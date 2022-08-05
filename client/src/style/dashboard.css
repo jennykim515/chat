@@ -2,9 +2,9 @@
     /* display: flex; */
     width: 80%;
     height: 80vh;
-    /* padding: 50px; */
     border-radius: 50px;
     border: 1px solid gray;
+    background-color: white;
 }
 
 .center-dashboard {
@@ -12,6 +12,21 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
+}
+
+.chat-align {
+    display: flex;
+}
+
+button {
+    text-align: center;
+    padding: 5px 10px;
+    text-decoration: none;
+    display: inline-block;
+    background-color: rgb(41, 41, 41);
+    border-radius: 5px;
+    color: white;
+    border: none;
 }
 
 .flex {
@@ -27,4 +42,10 @@
 .dashboard-body {
     width: 70%;
     padding: 50px;
+}
+
+.open-room {
+    list-style: none;
+    font-size: 1.2em;
+    padding: 20px 0px;
 }

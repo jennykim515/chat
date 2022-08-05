@@ -16,39 +16,39 @@ function Chat(props) {
 
     useEffect(() => {
         socket.emit('join-room', room, message => {
-            console.log("callback", message)
             socket.emit('ping', props.friend);
         })
 
     }, [])
 
-    if (socket) {
-        socket.on('connect', () => {
-            socket.on('receive-message', message => {
-                setMessages(oldMessages => [...oldMessages, {
-                    message: message,
-                    sent: false
-                }])
-            })
-
-            socket.on('new-user-update', new_user => {
-                // new user was added to database, check if it's friend's
-                if (new_user.username === props.friend) {
-                    setFriendInfo(new_user)
-                }
-            })
-
-            socket.on('friend-info', response => {
-                setFriendInfo(response);
-            })
-
-            socket.on('someone-disconnected', disconnected_user => {
-                if (disconnected_user === props.friend) {
-                    setFriendInfo({});
-                }
-            })
+    useEffect(() => {
+        console.log("connected at least")
+        socket.on('receive-message', message => {
+            setMessages(oldMessages => [...oldMessages, {
+                message: message,
+                sent: false
+            }])
         })
-    }
+
+        socket.on('new-user-update', new_user => {
+            // new user was added to database, check if it's friend's
+            if (new_user.username === props.friend) {
+                setFriendInfo(new_user)
+            }
+        })
+
+        socket.on('friend-info', response => {
+            console.log("Received friend info", response)
+            setFriendInfo(response);
+        })
+
+        socket.on('someone-disconnected', disconnected_user => {
+            if (disconnected_user === props.friend) {
+                setFriendInfo({});
+            }
+        })
+    }, [socket])
+
 
     const changeInput = (event) => {
         setMessage({
@@ -73,17 +73,14 @@ function Chat(props) {
     return (
         <div>
             <div className='person-details-bar'>
-
                 {Object.entries(friendInfo).length > 0 ?
                     <>
-                        {console.log("THE OBJECT IS NOT EMPTY")}
                         <h1>{friendInfo.name}</h1>
                         <h5>@{props.friend}</h5>
-                        <h5>{friendInfo.language}</h5>
+                        {/* <h5>{friendInfo.language}</h5> */}
                     </>
                     :
                     (<>
-                        {console.log("THE OBJECT IS EMPTY")}
                         <h5>User {props.friend} is currently offline and won't be able to see your messages</h5>
                     </>)
                 }
