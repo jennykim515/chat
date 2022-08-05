@@ -57,6 +57,7 @@ io.on('connection', socket => {
         cb(`joined ${room}`)
     })
 
+
     socket.on('disconnect', function () {
         for (let username in users) {
             if (users[username].socketId === socket.id) {

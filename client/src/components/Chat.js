@@ -1,6 +1,7 @@
 import '../style/chat.css'
 import { io } from 'socket.io-client'
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
+import { AppContext } from '../App';
 
 function Chat(props) {
     const room = props.room;
@@ -9,22 +10,16 @@ function Chat(props) {
         sent: false
     });
     const [messages, setMessages] = useState([]);
-    const [socket, setSocket] = useState();
+    const { socket } = useContext(AppContext);
     const [friendInfo, setFriendInfo] = useState({});
 
 
     useEffect(() => {
-        if (!socket) {
-            let mysocket = io('http://localhost:3000')
-            setSocket(mysocket)
+        socket.emit('join-room', room, message => {
+            console.log("callback", message)
+            socket.emit('ping', props.friend);
+        })
 
-            mysocket.emit('join-room', room, message => {
-                console.log("callback", message)
-                mysocket.emit('ping', props.friend);
-            })
-
-
-        }
     }, [])
 
     if (socket) {

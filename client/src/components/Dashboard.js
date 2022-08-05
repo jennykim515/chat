@@ -9,7 +9,7 @@ function Dashboard() {
     const [friendID, setFriendID] = useState('');
     const [room, setRoom] = useState(null);
     const [modal, setModal] = useState(true);
-
+    const [availableChatrooms, setAvailableChatrooms] = useState([]);
 
     const leaveRoom = (event) => {
         event.preventDefault();
