@@ -8,6 +8,7 @@ import { AppContext } from '../App';
 const Signup = () => {
     const [languages, setLanguages] = useState([]);
     const [chosenLanguage, setChosenLanguage] = useState('Choose Language')
+    const [error, setError] = useState('')
     const { setUser, socket } = useContext(AppContext);
 
     useEffect(() => {
@@ -31,7 +32,10 @@ const Signup = () => {
                 setUser({
                     userObject
                 })
-
+                setError('')
+            }
+            else {
+                setError('That username is currently taken.')
             }
         })
 
@@ -41,25 +45,32 @@ const Signup = () => {
             <form className="sign-up-form" onSubmit={handleSubmit}>
                 <h3>Sign Up</h3>
                 <div className='input-container'>
-                    <label className='label'>Name </label>
-                    <input placeholder='Johnny Chen' className='input' name='name' type='text' />
+                    <input placeholder='Johnny Chen' className='input' name='name' type='text' required />
                 </div>
 
                 <br />
 
                 <div className='input-container'>
-                    <label className='label'>Username</label>
-                    <input placeholder='johnnychen' className='input' name='username' type='text' />
-                    <br />
-                </div>
+                    {error ? (
+                        <input placeholder='johnnychen' className='input-error' name='username' type='text' required />
 
-                <DropdownButton id="dropdown-size-small" title={`${chosenLanguage}`}>
+                    ) : (
+                        <input placeholder='johnnychen' className='input' name='username' type='text' required />
+
+                    )}
+                    <br /><br />
+
+                    <div className='error-message'>
+                        {error && <p className='error' > {error}</p>}
+                    </div>
+                </div>
+                {/* <DropdownButton id="dropdown-size-small" title={`${chosenLanguage}`}>
                     {(languages).map(l => {
                         return <Dropdown.Item
                             key={l.language}
                             onClick={() => setChosenLanguage(l.name)} >{l.name}</Dropdown.Item>
                     })}
-                </DropdownButton>
+                </DropdownButton> */}
 
 
 
@@ -69,7 +80,7 @@ const Signup = () => {
 
 
             </form>
-        </div>
+        </div >
     )
 }
 export default Signup;

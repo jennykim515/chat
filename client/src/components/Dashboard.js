@@ -10,6 +10,7 @@ function Dashboard() {
     const [room, setRoom] = useState(null);
     const [modal, setModal] = useState(true);
 
+
     const leaveRoom = (event) => {
         event.preventDefault();
         setModal(true);
@@ -39,6 +40,11 @@ function Dashboard() {
                                 <input value={friendID} onChange={(event) => setFriendID(event.target.value)} />
                                 <button type='submit'>Start Chat</button>
                             </form>
+
+                            <hr />
+                            <div className='open-rooms'>
+                                <h5>Open Rooms</h5>
+                            </div>
                         </>
                     ) :
                         (<form onSubmit={leaveRoom}>

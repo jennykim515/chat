@@ -76,13 +76,6 @@ function Chat(props) {
     }
 
     return (
-        /*
-var car = {};
-var isEmpty = Object.entries(car).length > 0; //false
-
-var car = {make: "Opel", year: 2015};
-var isEmpty = Object.entries(car).length > 0; //true
-        */
         <div>
             <div className='person-details-bar'>
 
