@@ -1,0 +1,8 @@
+.person-card {
+    border-top: thin solid rgb(219, 219, 219);
+    border-bottom: thin solid rgb(219, 219, 219);
+}
+
+.active-chat {
+    background-color: rgb(241, 240, 240);
+}

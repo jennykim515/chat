@@ -1,0 +1,32 @@
+.new-message {
+    width: 100%;
+    border-radius: 6.25em;
+    padding: 0.625em;
+}
+
+.messages-container {
+    /* border: 1px solid blue; */
+    overflow-y: scroll;
+    /* change height */
+    height: 60vh;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+.received-message,
+.sent-message {
+    list-style: none;
+    font-size: 1.5em;
+
+}
+
+.received-message {
+    text-align: left;
+}
+
+.sent-message {
+    text-align: right;
+}
